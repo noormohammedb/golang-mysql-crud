@@ -46,3 +46,20 @@ func AddPersonData(person models.Person) error {
 	defer insertQuery.Close()
 	return nil
 }
+
+func SeedDataToDb(person []models.Person) error {
+	db, _ := GetDb()
+	defer db.Close()
+	dataToDb := GetData()
+	dbInsertQuery := "INSERT INTO person(name, age, location) VALUES(?, ?, ?)"
+	for _, data := range dataToDb {
+		insertQuery, err := db.Prepare(dbInsertQuery)
+		if err != nil {
+			fmt.Println("insert query prepare error")
+			return err
+		}
+		defer insertQuery.Close()
+		insertQuery.Exec(data.Name, data.Age, data.Location)
+	}
+	return nil
+}
