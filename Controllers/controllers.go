@@ -63,3 +63,27 @@ func SeedDataToDb(person []models.Person) error {
 	}
 	return nil
 }
+
+func EditPersonData(id string, newData models.Person) (int64, error) {
+	db, _ := GetDb()
+	defer db.Close()
+	dbUpdateQuery := "UPDATE person SET name=?, age=?, location=? WHERE id=?"
+	dataUpdate, err := db.Prepare(dbUpdateQuery)
+	if err != nil {
+		return 0, err
+	}
+	defer dataUpdate.Close()
+	dbRes, dbUpdateErr := dataUpdate.Exec(newData.Name, newData.Age, newData.Location, id)
+	if dbUpdateErr != nil {
+		log.Fatal(dbUpdateErr)
+		return 0, dbUpdateErr
+	}
+	rows, _ := dbRes.RowsAffected()
+	return rows, nil
+}
+
+func ErrorCheck(err error) {
+	if err != nil {
+		panic(err.Error())
+	}
+}

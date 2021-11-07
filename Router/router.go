@@ -16,6 +16,7 @@ func Routers() *mux.Router {
 	muxRouter.HandleFunc("/get", GetAllData).Methods("get")
 	muxRouter.HandleFunc("/add", AddPerson).Methods("post")
 	muxRouter.HandleFunc("/seed", SeedData).Methods("get")
+	muxRouter.HandleFunc("/edit/{id}", EditAPerson).Methods("put")
 
 	return muxRouter
 }
@@ -55,4 +56,27 @@ func AddPerson(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	json.NewEncoder(w).Encode("Success")
+}
+
+func EditAPerson(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("edit person")
+	w.Header().Set("Content-Type", "application/json")
+	parms := mux.Vars(r)
+	var editData models.Person
+	decError := json.NewDecoder(r.Body).Decode(&editData)
+	if parms["id"] == "" || decError != nil {
+		json.NewEncoder(w).Encode("Request Error")
+		return
+	}
+	rowCound, updateErr := controllers.EditPersonData(parms["id"], editData)
+	if updateErr != nil {
+		fmt.Println("update error")
+		json.NewEncoder(w).Encode("Server Error")
+		return
+	}
+	if rowCound > 0 {
+		json.NewEncoder(w).Encode("Success")
+		return
+	}
+	json.NewEncoder(w).Encode("No Change")
 }
