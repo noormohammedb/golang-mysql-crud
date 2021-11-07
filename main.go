@@ -10,36 +10,7 @@ import (
 )
 
 func main() {
-	fmt.Println("golang mysql crud app")
+	fmt.Println("golang mysql CRUD app")
 
 	log.Fatal(http.ListenAndServe(":8080", router.Routers()))
-
-	// insertData(db)
-
-	// jsonData, _ := json.MarshalIndent(dataFromDb, "", " ")
-
-	// fmt.Println(string(jsonData))
-
 }
-
-// func insertData(db *sql.DB) error {
-// 	peaple := GetData()
-// 	fmt.Println(peaple)
-// 	for _, person := range peaple {
-// 		dbQuery := "INSERT INTO person(name, age, location) VALUES(?, ?, ?)"
-// 		insertQuery, err := db.Prepare(dbQuery)
-// 		if err != nil {
-// 			fmt.Println("insert query prepare error")
-// 			return err
-// 		}
-// 		defer insertQuery.Close()
-
-// 		dbResponse, err := insertQuery.Exec(person.Name, person.Age, person.Location)
-// 		if err != nil {
-// 			return err
-// 		}
-// 		fmt.Println(dbResponse)
-// 	}
-// 	return nil
-
-// }

@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"log"
 
 	models "github.com/noormohammedb/golang-mysql-crud/Models"
@@ -26,4 +27,22 @@ func GetDataFromDb() ([]models.Person, error) {
 		peaple = append(peaple, iterPerson)
 	}
 	return peaple, nil
+}
+
+func AddPersonData(person models.Person) error {
+	db, _ := GetDb()
+	defer db.Close()
+	fmt.Println(person)
+	dbQuery := "INSERT INTO person(name, age, location) VALUES(?, ?, ?)"
+	insertQuery, err := db.Prepare(dbQuery)
+	if err != nil {
+		fmt.Println("insert query prepare error")
+		return err
+	}
+	_, errIns := insertQuery.Exec(person.Name, person.Age, person.Location)
+	if errIns != nil {
+		return errIns
+	}
+	defer insertQuery.Close()
+	return nil
 }
