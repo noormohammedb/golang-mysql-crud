@@ -1,7 +1,9 @@
-package main
+package controllers
 
 import (
 	"encoding/json"
+
+	models "github.com/noormohammedb/golang-mysql-crud/Models"
 )
 
 const data = `[
@@ -16,7 +18,7 @@ const data = `[
 	{"name": "Bessie J Grajeda", "age": 28, "location": "Nashville"}
 ]`
 
-func GetData() (peaple []Person) {
+func GetData() (peaple []models.Person) {
 	err := json.Unmarshal([]byte(data), &peaple)
 	if err != nil {
 		panic(err)
