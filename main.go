@@ -2,16 +2,19 @@ package main
 
 import (
 	"fmt"
+	"log"
+	"net/http"
 
 	_ "github.com/go-sql-driver/mysql"
+	router "github.com/noormohammedb/golang-mysql-crud/Router"
 )
 
 func main() {
 	fmt.Println("golang mysql crud app")
 
+	log.Fatal(http.ListenAndServe(":8080", router.Routers()))
+
 	// insertData(db)
-	// dataFromDb, _ := showPeaples(db)
-	// fmt.Println(dataFromDb)
 
 	// jsonData, _ := json.MarshalIndent(dataFromDb, "", " ")
 
@@ -38,18 +41,5 @@ func main() {
 // 		fmt.Println(dbResponse)
 // 	}
 // 	return nil
-
-// }
-
-// func showPeaples(db *sql.DB) {
-// }
-// for dbResults {
-// 	var row Person
-// 	err := dbResults.Scan(&row)
-// 	if err != nil {
-// 		panic(err)
-// 	}
-// 	fmt.Println(row)
-// }
 
 // }

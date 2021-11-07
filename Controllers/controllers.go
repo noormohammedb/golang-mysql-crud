@@ -8,7 +8,7 @@ import (
 
 func GetDataFromDb() ([]models.Person, error) {
 	db, _ := GetDb()
-
+	defer db.Close()
 	dbQuery := "SELECT * FROM person"
 	selectQuery, err := db.Query(dbQuery)
 	if err != nil {
@@ -25,6 +25,5 @@ func GetDataFromDb() ([]models.Person, error) {
 		}
 		peaple = append(peaple, iterPerson)
 	}
-
 	return peaple, nil
 }
