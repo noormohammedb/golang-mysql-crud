@@ -17,6 +17,7 @@ func Routers() *mux.Router {
 	muxRouter.HandleFunc("/add", AddPerson).Methods("post")
 	muxRouter.HandleFunc("/seed", SeedData).Methods("get")
 	muxRouter.HandleFunc("/edit/{id}", EditAPerson).Methods("put")
+	muxRouter.HandleFunc("/delete/{id}", DeleteAPerson).Methods("delete")
 
 	return muxRouter
 }
@@ -76,6 +77,23 @@ func EditAPerson(w http.ResponseWriter, r *http.Request) {
 	}
 	if rowCound > 0 {
 		json.NewEncoder(w).Encode("Success")
+		return
+	}
+	json.NewEncoder(w).Encode("No Change")
+}
+
+func DeleteAPerson(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("delete person")
+	w.Header().Set("Content-Type", "application/json")
+	parms := mux.Vars(r)
+	dbRowNos, err := controllers.DeleteAPerson(parms["id"])
+	if err != nil {
+		fmt.Println("err")
+		json.NewEncoder(w).Encode("Server Error")
+		return
+	}
+	if dbRowNos > 0 {
+		json.NewEncoder(w).Encode("Deleted")
 		return
 	}
 	json.NewEncoder(w).Encode("No Change")

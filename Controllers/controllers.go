@@ -10,7 +10,7 @@ import (
 func GetDataFromDb() ([]models.Person, error) {
 	db, _ := GetDb()
 	defer db.Close()
-	dbQuery := "SELECT * FROM person"
+	dbQuery := "SELECT id, Name, Age, Location FROM person WHERE isDeleted=0"
 	selectQuery, err := db.Query(dbQuery)
 	if err != nil {
 		panic(err)
@@ -78,6 +78,19 @@ func EditPersonData(id string, newData models.Person) (int64, error) {
 		log.Fatal(dbUpdateErr)
 		return 0, dbUpdateErr
 	}
+	rows, _ := dbRes.RowsAffected()
+	return rows, nil
+}
+
+func DeleteAPerson(perId string) (int64, error) {
+	db, _ := GetDb()
+	defer db.Close()
+	dbUpdateQuery := "UPDATE person SET isDeleted=1 WHERE id=?"
+	dbUpdate, err := db.Prepare(dbUpdateQuery)
+	ErrorCheck(err)
+	defer dbUpdate.Close()
+	dbRes, dbErr := dbUpdate.Exec(perId)
+	ErrorCheck(dbErr)
 	rows, _ := dbRes.RowsAffected()
 	return rows, nil
 }

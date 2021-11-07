@@ -13,5 +13,6 @@ CREATE TABLE IF NOT EXISTS `person` (
   `Name` text,
   `Age` int,
   `Location` text,
+  `isDeleted` boolean NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4;
