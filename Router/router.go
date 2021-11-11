@@ -14,6 +14,7 @@ func Routers() *mux.Router {
 	muxRouter := mux.NewRouter()
 	muxRouter.HandleFunc("/", ServerHome).Methods("get")
 	muxRouter.HandleFunc("/get", GetAllData).Methods("get")
+	muxRouter.HandleFunc("/get/{id}", GetAData).Methods("get")
 	muxRouter.HandleFunc("/add", AddPerson).Methods("post")
 	muxRouter.HandleFunc("/seed", SeedData).Methods("get")
 	muxRouter.HandleFunc("/edit/{id}", EditAPerson).Methods("put")
@@ -42,7 +43,15 @@ func SeedData(w http.ResponseWriter, r *http.Request) {
 func GetAllData(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("get all data")
 	w.Header().Set("Content-Type", "application/json")
-	data, _ := controllers.GetDataFromDb()
+	data, _ := controllers.GetAllDataFromDb()
+	json.NewEncoder(w).Encode(data)
+}
+
+func GetAData(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("get all data")
+	w.Header().Set("Content-Type", "application/json")
+	parms := mux.Vars(r)
+	data, _ := controllers.GetADataFromDb(parms["id"])
 	json.NewEncoder(w).Encode(data)
 }
 

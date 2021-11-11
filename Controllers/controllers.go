@@ -7,7 +7,7 @@ import (
 	models "github.com/noormohammedb/golang-mysql-crud/Models"
 )
 
-func GetDataFromDb() ([]models.Person, error) {
+func GetAllDataFromDb() ([]models.Person, error) {
 	db, _ := GetDb()
 	defer db.Close()
 	dbQuery := "SELECT id, Name, Age, Location FROM person WHERE isDeleted=0"
@@ -20,6 +20,29 @@ func GetDataFromDb() ([]models.Person, error) {
 	for selectQuery.Next() {
 		var iterPerson models.Person
 		err := selectQuery.Scan(&iterPerson.Id, &iterPerson.Name, &iterPerson.Age, &iterPerson.Location)
+		if err != nil {
+			log.Fatal(err)
+			return peaple, err
+		}
+		peaple = append(peaple, iterPerson)
+	}
+	return peaple, nil
+}
+
+func GetADataFromDb(dataId string) ([]models.Person, error) {
+	db, _ := GetDb()
+	defer db.Close()
+	dbQuery := "SELECT id, Name, Age, Location FROM person WHERE isDeleted=0 AND id=?"
+	selectQuery, err := db.Prepare(dbQuery)
+	if err != nil {
+		panic(err)
+	}
+	selectResult, _ := selectQuery.Query(dataId)
+	var peaple []models.Person
+	defer selectQuery.Close()
+	for selectResult.Next() {
+		var iterPerson models.Person
+		err := selectResult.Scan(&iterPerson.Id, &iterPerson.Name, &iterPerson.Age, &iterPerson.Location)
 		if err != nil {
 			log.Fatal(err)
 			return peaple, err
