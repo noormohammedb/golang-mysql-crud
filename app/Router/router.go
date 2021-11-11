@@ -18,6 +18,7 @@ func Routers() *mux.Router {
 	muxRouter.HandleFunc("/add", AddPerson).Methods("post")
 	muxRouter.HandleFunc("/seed", SeedData).Methods("get")
 	muxRouter.HandleFunc("/edit/{id}", EditAPerson).Methods("put")
+	muxRouter.HandleFunc("/delete/all", DeleteAllPerson).Methods("delete")
 	muxRouter.HandleFunc("/delete/{id}", DeleteAPerson).Methods("delete")
 
 	return muxRouter
@@ -100,8 +101,23 @@ func DeleteAPerson(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("err")
 		json.NewEncoder(w).Encode("Server Error")
 		return
+	} else if dbRowNos > 0 {
+		json.NewEncoder(w).Encode("Deleted")
+		return
 	}
-	if dbRowNos > 0 {
+	json.NewEncoder(w).Encode("No Change")
+}
+
+func DeleteAllPerson(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("delete all person")
+	w.Header().Set("Content-Type", "application/json")
+	dbRows, err := controllers.DeleteAllPerson()
+	fmt.Println(dbRows)
+	if err != nil {
+		fmt.Println("err")
+		json.NewEncoder(w).Encode("Server Error")
+		return
+	} else if dbRows > 0 {
 		json.NewEncoder(w).Encode("Deleted")
 		return
 	}

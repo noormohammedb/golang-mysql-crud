@@ -118,6 +118,22 @@ func DeleteAPerson(perId string) (int64, error) {
 	return rows, nil
 }
 
+func DeleteAllPerson() (int64, error) {
+	fmt.Println("delete all logic function")
+	db, _ := GetDb()
+	defer db.Close()
+	dbUpdateQuery := "UPDATE person SET isDeleted=1"
+	dbUpdate, err := db.Prepare(dbUpdateQuery)
+	ErrorCheck(err)
+	defer dbUpdate.Close()
+	dbRes, dbErr := dbUpdate.Exec()
+	fmt.Println(dbRes, dbErr)
+	ErrorCheck(dbErr)
+	rows, _ := dbRes.RowsAffected()
+	fmt.Println("rows : ", rows)
+	return rows, nil
+}
+
 func ErrorCheck(err error) {
 	if err != nil {
 		panic(err.Error())
