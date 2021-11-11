@@ -3,7 +3,7 @@ package controllers
 import (
 	"encoding/json"
 
-	models "github.com/noormohammedb/golang-mysql-crud/Models"
+	models "github.com/noormohammedb/golang-mysql-crud/app/Models"
 )
 
 const data = `[

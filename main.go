@@ -6,7 +6,7 @@ import (
 	"net/http"
 
 	_ "github.com/go-sql-driver/mysql"
-	router "github.com/noormohammedb/golang-mysql-crud/Router"
+	router "github.com/noormohammedb/golang-mysql-crud/app/Router"
 )
 
 func main() {

@@ -6,8 +6,8 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	controllers "github.com/noormohammedb/golang-mysql-crud/Controllers"
-	models "github.com/noormohammedb/golang-mysql-crud/Models"
+	controllers "github.com/noormohammedb/golang-mysql-crud/app/Controllers"
+	models "github.com/noormohammedb/golang-mysql-crud/app/Models"
 )
 
 func Routers() *mux.Router {

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 
-	models "github.com/noormohammedb/golang-mysql-crud/Models"
+	models "github.com/noormohammedb/golang-mysql-crud/app/Models"
 )
 
 func GetAllDataFromDb() ([]models.Person, error) {
